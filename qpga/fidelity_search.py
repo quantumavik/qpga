@@ -9,6 +9,7 @@ from tqdm import tqdm
 from qpga.state_preparation import get_random_state_vector
 from qpga.utils import np_to_k_complex
 from qpga.training import build_and_train_qpga
+import os
 
 
 def prepare_training_data(squanch_circuit, num_qubits, num_states, convert_to_k_complex = True):
@@ -19,6 +20,8 @@ def prepare_training_data(squanch_circuit, num_qubits, num_states, convert_to_k_
 
     # Prepare a squanch qstream to operate on
     qstream = QStream.from_array(np.copy(in_states), use_density_matrix = False)
+    #qstream = QStream.from_array(np.copy(in_states))
+    #qstream = QStream.from_array(np.array([np.outer(x, x.conj()) for x in np.copy(in_states)]))
 
     # Apply the circuit to the input states
     for qsys in tqdm(qstream):
@@ -68,7 +71,7 @@ def fidelity_depth_search(depths, in_data, out_data, path,
             print(f"\n\n=> Attempt {attempt + 1}/{max_attempts}...")
 
             log_dir = f"{path}/tensorboard/depth_{depth}_attempt{attempt}"
-
+            log_dir= os.path.join('logs','fit','')
             model, history = build_and_train_qpga(depth, in_data, out_data,
                                                   validation_split = validation_split,
                                                   target_antifidelity = target_antifidelity,

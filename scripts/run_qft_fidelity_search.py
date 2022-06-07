@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     start_time = datetime.now().strftime("%Y.%m.%d.%H.%M.%S")
 
-    log_path = "./logs"
+    log_path = ".logs"
     experiment = "QFT"
     size = f"{N}_qubits"
     if args.num_ancillae > 0:

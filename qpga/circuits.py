@@ -27,6 +27,15 @@ def cluster_state_generator(qubits):
                 squanch.CPHASE(qubits[index], qubits[index + k], np.pi)
                 # print(f"CZ({index}, {index + k})")
 
+def Grover(qubits, num_ancillae = 0):
+    ''' Applies Grover's Algorithm to inputs'''
+    N = len(qubits) - num_ancillae
+    # Hadamard
+    for qubit in qubits:
+        squanch.H(qubit)
+    # Oracle
+    # Diffusion
+
 
 def QFT(qubits, num_ancillae = 0):
     '''Applies quantum Fourier transform to inputs, then shuffles the output to be in the same order as input'''

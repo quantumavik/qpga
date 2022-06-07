@@ -4,6 +4,7 @@ import h5py
 from tensorflow.python.keras.callbacks import Callback
 
 from qpga.linalg import extract_operator_from_model
+import numpy as np
 
 
 class FrameWriterCallback(Callback):
@@ -119,12 +120,21 @@ class StatePreparationHistoryCallback(Callback):
         # Compute initial fidelity
         if self.input_state is not None and self.target_state is not None:
             antifidelity = self.model.evaluate(self.input_state, self.target_state)
-            self.fidelities.append(1 - antifidelity)
-
-            output_state = self.model.predict(self.in_data)
+            #self.fidelities.append(1 - antifidelity) #original
+            self.fidelities.append(1 - np.mean(antifidelity))
+            print('antifidelity')
+            print(np.mean(antifidelity))
+            print('fidelity')
+            print(1-np.mean(antifidelity))
+            #self.fidelities.append(np.ones(len(antifidelity)) - antifidelity) #list
+            #output_state = self.model.predict(self.in_data) #original
+            output_state = self.model.predict(self.input_state) 
             self.output_states.append(output_state)
 
     def on_train_batch_end(self, batch, logs = None):
+        antifidelity = self.model.evaluate(self.input_state, self.target_state)
+        #self.fidelities.append(1 - logs.get('antifidelity')) #original
+        #self.fidelities.append(np.ones(len(antifidelity)) - logs.get('antifidelity'))
         self.fidelities.append(1 - logs.get('antifidelity'))
         output_state = self.model.predict(self.input_state)
         self.output_states.append(output_state)

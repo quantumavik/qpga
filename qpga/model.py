@@ -5,6 +5,8 @@ from tensorflow.python.keras import Sequential, Input
 from tensorflow.python.keras.backend import dot
 from tensorflow.python.keras.layers import Layer, Lambda
 
+
+
 from qpga.utils import tf_to_k_complex, k_to_tf_complex
 from qpga.constants import IDENTITY, CPHASE_MOD, BS_MATRIX, CPHASE
 from qpga.linalg import tensors
@@ -220,6 +222,8 @@ class QPGA(keras.Model):
 
 def antifidelity(state_true, state_pred):
     # inner_prods = tf.einsum('bs,bs->b', tf.math.conj(state_true), state_pred)
+    print(state_true.shape)
+    print(state_pred.shape)
     state_true = k_to_tf_complex(state_true)
     state_pred = k_to_tf_complex(state_pred)
     inner_prods = tf.reduce_sum(tf.multiply(tf.math.conj(state_true), state_pred), 1)

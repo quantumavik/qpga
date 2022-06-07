@@ -1,5 +1,6 @@
 from tensorflow.python.keras.optimizers import Adam
 
+
 from qpga import *
 
 
@@ -14,7 +15,7 @@ def build_and_train_qpga(depth, in_data, out_data,
                          verbose = True,
                          print_summary = True):
     num_qubits = int(np.log2(in_data.shape[-1]))
-
+    tf.reset_default_graph()
     if verbose: print(f"Instantiating model with {num_qubits} qubits and depth of {depth}...")
     model = QPGA(num_qubits, depth).as_sequential()
 
